@@ -16,7 +16,9 @@ set(CONFIG_ADD_OPTIONS "--prefix;${CMAKE_BINARY_DIR}")
 	if(DEFINED CMAKE_TOOLCHAIN_FILE)
 		add_custom_command(
 			OUTPUT BUILD_LIBZ
-			COMMAND wget -qO- http://zlib.net/${TOOL_LIBZ_SOURCE} | tar -zxvf - 
+			#COMMAND wget -qO- http://zlib.net/${TOOL_LIBZ_SOURCE} | tar -zxvf - 
+			COMMAND test -e ${CMAKE_CURRENT_SOURCE_DIR}/${TOOL_LIBZ_SOURCE} || wget -qO- http://zlib.net/${TOOL_LIBZ_SOURCE} > ${CMAKE_CURRENT_SOURCE_DIR}/${TOOL_LIBZ_SOURCE} 
+			COMMAND tar -zxvf ${CMAKE_CURRENT_SOURCE_DIR}/${TOOL_LIBZ_SOURCE} 
 			COMMAND cd ${TOOL_LIBZ_DIR} && ${target_platform_preconfigure_options} ./configure ${CONFIG_ADD_OPTIONS}
 			COMMAND cd ${TOOL_LIBZ_DIR} && make -j4 && make install
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -25,7 +27,9 @@ set(CONFIG_ADD_OPTIONS "--prefix;${CMAKE_BINARY_DIR}")
 	else(DEFINED CMAKE_TOOLCHAIN_FILE)
 		add_custom_command(
 			OUTPUT BUILD_LIBZ
-			COMMAND wget -qO- http://zlib.net/${TOOL_LIBZ_SOURCE} | tar -zxvf -
+			#COMMAND wget -qO- http://zlib.net/${TOOL_LIBZ_SOURCE} | tar -zxvf -
+			COMMAND test -e ${CMAKE_CURRENT_SOURCE_DIR}/${TOOL_LIBZ_SOURCE} || wget -qO- http://zlib.net/${TOOL_LIBZ_SOURCE} > ${CMAKE_CURRENT_SOURCE_DIR}/${TOOL_LIBZ_SOURCE} 
+			COMMAND tar -zxvf ${CMAKE_CURRENT_SOURCE_DIR}/${TOOL_LIBZ_SOURCE} 
 			COMMAND cd ${TOOL_LIBZ_DIR} && ./configure ${CONFIG_ADD_OPTIONS} 
 			COMMAND cd ${TOOL_LIBZ_DIR} && make -j4 && make install
 			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
